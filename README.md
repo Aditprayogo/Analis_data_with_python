@@ -101,7 +101,7 @@ Dashboard akan terbuka secara otomatis di browser Anda.
 
 ## 📷 Preview Dashboard
 
-![Streamlit Dashboard](../streamlit_dashboard.png)
+![Streamlit Dashboard](/streamlit_dashboard.png)
 
 ---
 
