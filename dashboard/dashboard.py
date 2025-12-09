@@ -27,7 +27,7 @@ st.title("Bike Sharing Dashboard")
 
 # Sidebar filter by month/year
 with st.sidebar:
-    st.image("https://github.com/dicodingacademy/assets/raw/main/logo.png", width=150)
+    st.image("https://cdn-icons-png.flaticon.com/512/3062/3062634.png", width=150)
     st.markdown("## Filter Data")
     year = st.selectbox("Pilih Tahun", options=day_df['year'].unique())
     filtered_hour = hour_df[hour_df['year'] == year]
