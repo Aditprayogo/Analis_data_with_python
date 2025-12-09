@@ -51,32 +51,80 @@ st.pyplot(fig1)
 st.subheader("Pengaruh Cuaca dan Suhu")
 col1, col2 = st.columns(2)
 
+# Buat kolom label cuaca agar cocok dengan warna
+weather_labels = {
+    1: 'Cerah',
+    2: 'Berawan',
+    3: 'Hujan Ringan',
+    4: 'Ekstrem'
+}
+
+# Mapping label cuaca ke kolom baru
+filtered_hour['weather_label'] = filtered_hour['weathersit'].map(weather_labels)
+
+# Buat palette sesuai label (string)
+weather_palette = {
+    'Cerah': '#9beee0',
+    'Berawan': '#fdd835',
+    'Hujan Ringan': '#ff7043',
+    'Ekstrem': '#d32f2f'
+}
 
 with col1:
     fig2, ax2 = plt.subplots(figsize=(6,4))
-    sns.barplot(data=filtered_hour, x='weathersit', y='cnt', estimator='mean', ax=ax2)
-    ax2.set_title("Rata-rata Peminjaman per Kondisi Cuaca")
+    sns.barplot(
+        data=filtered_hour,
+        x='weather_label',  # Gunakan label sebagai x
+        y='cnt',
+        estimator='mean',
+        palette=weather_palette,
+        ax=ax2
+    )
+    ax2.set_title("Rata-rata Peminjaman Berdasarkan Kondisi Cuaca")
     ax2.set_xlabel("Kondisi Cuaca")
     ax2.set_ylabel("Jumlah Peminjaman")
     st.pyplot(fig2)
 
 
 with col2:
-    fig3, ax3 = plt.subplots(figsize=(6,4))
-    sns.scatterplot(data=filtered_hour, x='temp_celsius', y='cnt', alpha=0.3, ax=ax3)
-    ax3.set_title("Pengaruh Suhu terhadap Jumlah Peminjaman")
+    fig3, ax3 = plt.subplots(figsize=(10, 6))
+    scatter = sns.scatterplot(
+        data=filtered_hour,
+        x='temp_celsius',
+        y='cnt',
+        hue='temp_celsius',
+        palette='coolwarm',
+        alpha=0.6,
+        linewidth=0,
+        ax=ax3,
+        legend='brief'
+    )
+    ax3.set_title("Pengaruh Suhu terhadap Jumlah Peminjaman Sepeda")
     ax3.set_xlabel("Suhu (°C)")
     ax3.set_ylabel("Jumlah Peminjaman")
+    ax3.legend(title="Suhu (°C)", loc='upper left')
     st.pyplot(fig3)
 
 
 # 3. PERTANYAAN 3 - Hari kerja vs hari libur
 st.subheader("Perbandingan Hari Kerja dan Libur")
-fig4, ax4 = plt.subplots(figsize=(8,4))
-sns.barplot(data=filtered_day, x='workingday', y='cnt', estimator='mean', ax=ax4)
-ax4.set_title("Rata-rata Peminjaman: Hari Kerja vs Hari Libur")
-ax4.set_xlabel("Working Day (1 = Ya)")
-ax4.set_ylabel("Jumlah Peminjaman")
+filtered_day['kategori_hari'] = filtered_day['workingday'].map({0: 'Hari Non-Kerja', 1: 'Hari Kerja'})
+day_palette = {
+    'Hari Non-Kerja': '#90CAF9',  
+    'Hari Kerja': '#EF5350'      
+}
+fig4, ax4 = plt.subplots(figsize=(8, 5))
+sns.barplot(
+    data=filtered_day,
+    x='kategori_hari',
+    y='cnt',
+    estimator='mean',
+    palette=day_palette,
+    ax=ax4
+)
+ax4.set_title("Rata-rata Peminjaman Sepeda Berdasarkan Kategori Hari")
+ax4.set_xlabel("Kategori Hari")
+ax4.set_ylabel("Rata-rata Jumlah Peminjaman")
 st.pyplot(fig4)
 
 
